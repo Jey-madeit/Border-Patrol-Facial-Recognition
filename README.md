@@ -1,4 +1,4 @@
-# 🎨 NY Consult Face Recognition - Interactive Frontend
+# 🎨 Face Recognition - Interactive Frontend
 
 A modern, lively, and interactive face recognition web application with beautiful animations, real-time camera controls, and seamless user experience.
 
