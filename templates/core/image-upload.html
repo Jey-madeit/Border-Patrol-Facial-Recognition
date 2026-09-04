@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Border Patrol - Image Upload</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/dashboard-styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .upload-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .upload-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .upload-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .upload-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .required-field {
+            border-left: 3px solid #667eea;
+        }
+        
+        .required-field:focus {
+            border-left-color: #5a6fd8;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+        
+        .form-instructions {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+        }
+        
+        .form-instructions p {
+            margin: 0;
+            color: #1976d2;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f2ff;
+        }
+        
+        .file-upload-area i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload-area p {
+            margin: 0;
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .file-upload-area input[type="file"] {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .upload-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .recent-uploads {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .recent-uploads h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .image-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .image-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .image-item .info {
+            padding: 10px;
+            background: #f8f9fa;
+        }
+        
+        .image-item .title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .image-item .meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success {
+            background: #efe;
+            color: #363;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .uploads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .management-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            min-width: 200px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .image-item {
+            position: relative;
+        }
+        
+        .image-checkbox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .image-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .image-item:hover .image-actions {
+            opacity: 1;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .edit-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .edit-btn:hover {
+            background: #218838;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .view-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .view-btn:hover {
+            background: #138496;
+        }
+        
+        .load-more-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .modal-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .modal-info {
+            padding: 20px;
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .uploads-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .management-controls {
+                justify-content: center;
+            }
+            
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <!-- Header -->
+        <div class="upload-header">
+            <div>
+                <h1><i class="fas fa-cloud-upload-alt"></i> Image Upload</h1>
+                <p>Upload surveillance images, incident photos, and other evidence</p>
+            </div>
+            <a href="/api/admin-dashboard/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Upload Form -->
+        <div class="upload-form">
+            <div class="form-instructions">
+                <p><i class="fas fa-info-circle"></i> Please fill in the required fields marked with * to upload your image.</p>
+            </div>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="imageTitle">Image Title *</label>
+                    <input type="text" id="imageTitle" name="title" class="required-field" required placeholder="Enter a descriptive title for the image">
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageDescription">Description</label>
+                    <textarea id="imageDescription" name="description" rows="3" placeholder="Enter additional details about this image"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageType">Image Type *</label>
+                    <select id="imageType" name="image_type" class="required-field" required>
+                        <option value="">Select image type</option>
+                        <option value="surveillance">Surveillance Image</option>
+                        <option value="incident">Incident Photo</option>
+                        <option value="person">Person of Interest</option>
+                        <option value="vehicle">Vehicle Image</option>
+                        <option value="document">Document</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageLocation">Location</label>
+                    <input type="text" id="imageLocation" name="location" placeholder="Enter location where image was taken">
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageTags">Tags</label>
+                    <input type="text" id="imageTags" name="tags" placeholder="Enter comma-separated tags (e.g., suspect, vehicle, evidence)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="isPublic">Visibility</label>
+                    <select id="isPublic" name="is_public">
+                        <option value="false">Private (Admin only)</option>
+                        <option value="true">Public (All officers)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Image File *</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag and drop an image here or click to browse</p>
+                        <input type="file" id="imageFile" name="image" accept="image/*" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="upload-btn" id="uploadBtn">
+                    <i class="fas fa-upload"></i>
+                    Upload Image
+                </button>
+            </form>
+        </div>
+
+        <!-- Image Management -->
+        <div class="recent-uploads">
+            <div class="uploads-header">
+                <h3>Image Management</h3>
+                <div class="management-controls">
+                    <input type="text" id="imageSearch" class="search-input" placeholder="Search images...">
+                    <select id="imageFilter" class="filter-select">
+                        <option value="all">All Images</option>
+                        <option value="surveillance">Surveillance</option>
+                        <option value="incident">Incident</option>
+                        <option value="person">Person of Interest</option>
+                        <option value="vehicle">Vehicle</option>
+                        <option value="document">Document</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button id="refreshImages" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button id="bulkDeleteBtn" class="btn btn-danger" style="display: none;">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                </div>
+            </div>
+            <div id="recentImages" class="images-grid">
+                <!-- Images will be loaded here -->
+            </div>
+            <div id="loadMoreContainer" class="load-more-container">
+                <button id="loadMoreBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Load More Images
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Image Details</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img id="modalImage" class="modal-image" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <div class="info-item">
+                        <div class="info-label">Title</div>
+                        <div class="info-value" id="modalImageTitle"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Description</div>
+                        <div class="info-value" id="modalImageDescription"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Type</div>
+                        <div class="info-value" id="modalImageType"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Location</div>
+                        <div class="info-value" id="modalImageLocation"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Tags</div>
+                        <div class="info-value" id="modalImageTags"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Uploaded By</div>
+                        <div class="info-value" id="modalImageUploader"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Upload Date</div>
+                        <div class="info-value" id="modalImageDate"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">File Size</div>
+                        <div class="info-value" id="modalImageSize"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'core/js/image-upload.js' %}"></script>
+</body>
+</html>

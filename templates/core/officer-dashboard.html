@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Border Patrol Officer Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/dashboard-styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Security Background -->
+    <div class="security-bg">
+        <div class="security-pattern"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Border Patrol</h1>
+                </div>
+                <div class="user-info">
+                    <i class="fas fa-user-tie"></i>
+                    <span id="userName">Officer</span>
+                    <span class="badge-id" id="badgeId">BP001</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>On Duty</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="actions-grid">
+                    <button class="action-btn primary" id="faceRecognitionBtn">
+                        <i class="fas fa-camera"></i>
+                        <span>Face Recognition</span>
+                        <small>Identify individuals</small>
+                    </button>
+                    <button class="action-btn" id="incidentBtn">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Report Incident</span>
+                        <small>Log security events</small>
+                    </button>
+                    <button class="action-btn" id="patrolBtn">
+                        <i class="fas fa-route"></i>
+                        <span>Patrol Routes</span>
+                        <small>View assigned routes</small>
+                    </button>
+                    <button class="action-btn" id="imageUploadBtn">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload Images</span>
+                        <small>Add surveillance images</small>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Dashboard Widgets -->
+            <div class="dashboard-widgets">
+                <!-- Recent Activity -->
+                <section class="widget">
+                    <div class="widget-header">
+                        <h3>Recent Activity</h3>
+                        <button class="refresh-btn" id="refreshActivity">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="widget-content">
+                        <div class="activity-list" id="activityList">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p>Face recognition completed</p>
+                                    <small>2 minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon info">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p>Patrol route updated</p>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p>Unusual activity detected</p>
+                                    <small>1 hour ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Status -->
+                <section class="widget">
+                    <div class="widget-header">
+                        <h3>System Status</h3>
+                        <div class="status-indicator online">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <i class="fas fa-camera"></i>
+                                <span>Cameras</span>
+                                <span class="status-value">12/12</span>
+                            </div>
+                            <div class="status-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Network</span>
+                                <span class="status-value">Stable</span>
+                            </div>
+                            <div class="status-item">
+                                <i class="fas fa-database"></i>
+                                <span>Database</span>
+                                <span class="status-value">Connected</span>
+                            </div>
+                            <div class="status-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Security</span>
+                                <span class="status-value">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Alerts -->
+                <section class="widget alerts-widget">
+                    <div class="widget-header">
+                        <h3>Security Alerts</h3>
+                        <span class="alert-count" id="alertCount">3</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="alerts-list" id="alertsList">
+                            <div class="alert-item high">
+                                <div class="alert-icon">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>Unauthorized access attempt</p>
+                                    <small>Zone A - 5 minutes ago</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                            <div class="alert-item medium">
+                                <div class="alert-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>Motion detected</p>
+                                    <small>Camera 7 - 12 minutes ago</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                            <div class="alert-item low">
+                                <div class="alert-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>System maintenance scheduled</p>
+                                    <small>Tomorrow 2:00 AM</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Navigation</h3>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="sidebar-menu">
+                <!-- Main Dashboard -->
+                <li class="menu-item active">
+                    <a href="#dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <!-- Field Operations Section -->
+                <li class="menu-section">
+                    <span class="section-title">Field Operations</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#face-recognition">
+                        <i class="fas fa-camera"></i>
+                        <span>Face Recognition</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#patrol">
+                        <i class="fas fa-route"></i>
+                        <span>Patrol Routes</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#incidents-reporting">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Incident Reporting</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#daily-reports">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Daily Reports</span>
+                    </a>
+                </li>
+                
+                <!-- Data Management Section -->
+                <li class="menu-section">
+                    <span class="section-title">Data Management</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#image-upload">
+                        <i class="fas fa-upload"></i>
+                        <span>Image Upload</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/api/image-upload/" target="_blank">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Advanced Image Upload</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#incidents">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Incidents</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                
+                <!-- User Section -->
+                <li class="menu-section">
+                    <span class="section-title">User</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#profile" id="profileMenuItem">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+        <!-- Officer Page Interfaces -->
+        <div class="page-interfaces" id="pageInterfaces">
+            <!-- Image Upload Page -->
+            <div class="page-interface" id="image-upload-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-upload"></i>
+                        <h2>Image Upload</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshImagesBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p>Drag and drop images here or click to browse</p>
+                        <input type="file" id="imageFileInput" accept="image/*" multiple>
+                        <button class="upload-btn" id="uploadBtn">Choose Files</button>
+                    </div>
+                    <div class="uploaded-images" id="uploadedImages">
+                        <!-- Uploaded images will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incidents Page -->
+            <div class="page-interface" id="incidents-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Incidents</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="createIncidentBtn">
+                            <i class="fas fa-plus"></i> Create Incident
+                        </button>
+                        <button class="btn btn-secondary" id="refreshIncidentsBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="incident-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>My Incidents</h3>
+                                <span class="stat-number">5</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Pending</h3>
+                                <span class="stat-number">2</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Resolved</h3>
+                                <span class="stat-number">3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="incidents-table-container">
+                        <div class="table-controls">
+                            <select id="incidentFilter">
+                                <option value="all">All Incidents</option>
+                                <option value="active">Active</option>
+                                <option value="pending">Pending</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                            <input type="text" id="incidentSearch" placeholder="Search incidents...">
+                        </div>
+                        <div class="incidents-table" id="incidentsTable">
+                            <!-- Incidents table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patrol Routes Page -->
+            <div class="page-interface" id="patrol-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-route"></i>
+                        <h2>Patrol Routes</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="startPatrolBtn">
+                            <i class="fas fa-play"></i> Start Patrol
+                        </button>
+                        <button class="btn btn-secondary" id="refreshRoutesBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="patrol-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Assigned Routes</h3>
+                                <span class="stat-number">3</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Active Patrol</h3>
+                                <span class="stat-number">1</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Completed</h3>
+                                <span class="stat-number">2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="patrol-routes-container">
+                        <h3>My Patrol Routes</h3>
+                        <div class="routes-list" id="routesList">
+                            <!-- Patrol routes will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page-interface" id="reports-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-chart-bar"></i>
+                        <h2>Reports</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="generateReportBtn">
+                            <i class="fas fa-plus"></i> Generate Report
+                        </button>
+                        <button class="btn btn-secondary" id="refreshReportsBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="reports-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>My Reports</h3>
+                                <span class="stat-number">12</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Draft</h3>
+                                <span class="stat-number">2</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Submitted</h3>
+                                <span class="stat-number">10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reports-list-container">
+                        <h3>Recent Reports</h3>
+                        <div class="reports-list" id="reportsList">
+                            <!-- Reports will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Incidents Reporting Page -->
+            <div class="page-interface" id="incidents-reporting-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Incident Reporting</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="newIncidentBtn">
+                            <i class="fas fa-plus"></i> New Incident
+                        </button>
+                        <button class="btn btn-secondary" id="refreshIncidentsBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="incident-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Open</h3>
+                                <span class="stat-number">3</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>In Progress</h3>
+                                <span class="stat-number">2</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Resolved</h3>
+                                <span class="stat-number">15</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="incidents-list-container">
+                        <h3>My Incidents</h3>
+                        <div class="incidents-list" id="officerIncidentsList">
+                            <!-- Incidents will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Daily Reports Page -->
+            <div class="page-interface" id="daily-reports-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h2>Daily Reports</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="newDailyReportBtn">
+                            <i class="fas fa-plus"></i> New Report
+                        </button>
+                        <button class="btn btn-secondary" id="refreshDailyReportsBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="daily-reports-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Today</h3>
+                                <span class="stat-number">1</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-week"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>This Week</h3>
+                                <span class="stat-number">5</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>This Month</h3>
+                                <span class="stat-number">22</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="daily-reports-list-container">
+                        <h3>My Daily Reports</h3>
+                        <div class="daily-reports-list" id="dailyReportsList">
+                            <!-- Daily reports will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification System -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="modal-close" id="closeProfileModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="profile-avatar">
+                        <div class="avatar-container">
+                            <img src="https://via.placeholder.com/100x100/3b82f6/ffffff?text=O" alt="Profile Avatar" id="profileAvatar">
+                            <button type="button" class="avatar-upload-btn" id="avatarUploadBtn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" name="profileName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileBadgeId">Badge ID</label>
+                        <input type="text" id="profileBadgeId" name="profileBadgeId" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" name="profileEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileDepartment">Department</label>
+                        <select id="profileDepartment" name="profileDepartment" required>
+                            <option value="Field Operations">Field Operations</option>
+                            <option value="Intelligence">Intelligence</option>
+                            <option value="Investigations">Investigations</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileRank">Rank</label>
+                        <select id="profileRank" name="profileRank" required>
+                            <option value="Agent">Agent</option>
+                            <option value="Senior Agent">Senior Agent</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Chief">Chief</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhone">Phone Number</label>
+                        <input type="tel" id="profilePhone" name="profilePhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileBio">Bio</label>
+                        <textarea id="profileBio" name="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelProfile">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveProfile">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'core/js/dashboard.js' %}"></script>
+</body>
+</html>

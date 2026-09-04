@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Border Patrol Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/dashboard-styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Security Background -->
+    <div class="security-bg">
+        <div class="security-pattern"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Border Patrol Admin</h1>
+                </div>
+                <div class="user-info">
+                    <i class="fas fa-user-cog"></i>
+                    <span id="userName">Administrator</span>
+                    <span class="badge-id" id="badgeId">ADMIN001</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Administrative Actions</h2>
+                <div class="actions-grid">
+                    <button class="action-btn primary" id="userManagementBtn">
+                        <i class="fas fa-users-cog"></i>
+                        <span>User Management</span>
+                        <small>Manage officers and permissions</small>
+                    </button>
+                    <button class="action-btn" id="systemConfigBtn">
+                        <i class="fas fa-cogs"></i>
+                        <span>System Config</span>
+                        <small>Configure system settings</small>
+                    </button>
+                    <button class="action-btn" id="analyticsBtn" onclick="window.location.href='/api/analytics-page/'">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                        <small>View system analytics</small>
+                    </button>
+                    <button class="action-btn" id="auditLogsBtn">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Audit Logs</span>
+                        <small>Review system logs</small>
+                    </button>
+                    <button class="action-btn" id="djangoAdminBtn" onclick="window.open('/admin/', '_blank')">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Django Admin</span>
+                        <small>Open backend admin</small>
+                    </button>
+                    <button class="action-btn" id="surveillanceBtn">
+                        <i class="fas fa-video"></i>
+                        <span>Surveillance</span>
+                        <small>Monitor all cameras</small>
+                    </button>
+                    <button class="action-btn" id="imageUploadBtn" onclick="window.location.href='/api/image-upload/'">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload Images</span>
+                        <small>Upload surveillance images</small>
+                    </button>
+                    <button class="action-btn" id="imageManagementBtn" onclick="window.location.href='/api/image-management/'">
+                        <i class="fas fa-images"></i>
+                        <span>Image Management</span>
+                        <small>Manage uploaded images</small>
+                    </button>
+                    <button class="action-btn" id="userManagementBtn" onclick="window.location.href='/api/user-management/'">
+                        <i class="fas fa-users-cog"></i>
+                        <span>User Management</span>
+                        <small>Manage system users</small>
+                    </button>
+                    <button class="action-btn" id="auditLogsBtn" onclick="window.location.href='/api/audit-logs-page/'">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Audit Logs</span>
+                        <small>View system activity logs</small>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Dashboard Widgets -->
+            <div class="dashboard-widgets">
+                <!-- Welcome Message -->
+                <section class="widget welcome-widget">
+                    <div class="widget-header">
+                        <h3>Welcome to Admin Dashboard</h3>
+                    </div>
+                    <div class="widget-content">
+                        <div class="welcome-content">
+                            <div class="welcome-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="welcome-text">
+                                <h4>Border Patrol Administration</h4>
+                                <p>Use the sidebar navigation to access all administrative functions including officer management, incident handling, image management, and password administration.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Alerts -->
+                <section class="widget alerts-widget">
+                    <div class="widget-header">
+                        <h3>Security Alerts</h3>
+                        <span class="alert-count" id="alertCount">7</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="alerts-list" id="alertsList">
+                            <div class="alert-item critical">
+                                <div class="alert-icon">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>Multiple failed login attempts</p>
+                                    <small>IP: 192.168.1.100 - 2 minutes ago</small>
+                                </div>
+                                <button class="alert-action">Block</button>
+                            </div>
+                            <div class="alert-item high">
+                                <div class="alert-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>Unauthorized access attempt</p>
+                                    <small>Zone A - 5 minutes ago</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                            <div class="alert-item medium">
+                                <div class="alert-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>Motion detected</p>
+                                    <small>Camera 7 - 12 minutes ago</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                            <div class="alert-item low">
+                                <div class="alert-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="alert-details">
+                                    <p>System maintenance scheduled</p>
+                                    <small>Tomorrow 2:00 AM</small>
+                                </div>
+                                <button class="alert-action">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Performance -->
+                <section class="widget">
+                    <div class="widget-header">
+                        <h3>System Performance</h3>
+                        <div class="performance-indicator">
+                            <div class="performance-dot"></div>
+                            <span>Good</span>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <span class="metric-label">CPU Usage</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 45%"></div>
+                                </div>
+                                <span class="metric-value">45%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Memory</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 62%"></div>
+                                </div>
+                                <span class="metric-value">62%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Storage</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 38%"></div>
+                                </div>
+                                <span class="metric-value">38%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Network</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 28%"></div>
+                                </div>
+                                <span class="metric-value">28%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="sidebar-menu">
+                <!-- Main Dashboard -->
+                <li class="menu-item active">
+                    <a href="#dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                
+                <!-- System Management Section -->
+                <li class="menu-section">
+                    <span class="section-title">System Management</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#system-overview">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>System Overview</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#system-activity">
+                        <i class="fas fa-activity"></i>
+                        <span>System Activity</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#alerts">
+                        <i class="fas fa-bell"></i>
+                        <span>Alerts</span>
+                    </a>
+                </li>
+                
+                <!-- Personnel Management Section -->
+                <li class="menu-section">
+                    <span class="section-title">Personnel Management</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#officer-management">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Officer Management</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#password-management">
+                        <i class="fas fa-key"></i>
+                        <span>Password Management</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#audit-logs">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Audit Logs</span>
+                    </a>
+                </li>
+                
+                <!-- Operations Section -->
+                <li class="menu-section">
+                    <span class="section-title">Operations</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#incident-management">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Incident Management</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#surveillance">
+                        <i class="fas fa-video"></i>
+                        <span>Surveillance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#alerts">
+                        <i class="fas fa-bell"></i>
+                        <span>Alerts</span>
+                    </a>
+                </li>
+                
+                <!-- Data Management Section -->
+                <li class="menu-section">
+                    <span class="section-title">Data Management</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#image-management">
+                        <i class="fas fa-images"></i>
+                        <span>Image Management</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#analytics">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="#audit">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Audit Logs</span>
+                    </a>
+                </li>
+                
+                <!-- User Section -->
+                <li class="menu-section">
+                    <span class="section-title">User</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#profile" id="profileMenuItem">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+        <!-- Management Page Interfaces -->
+        <div class="page-interfaces" id="pageInterfaces">
+            <!-- System Overview Page -->
+            <div class="page-interface" id="system-overview-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-chart-pie"></i>
+                        <h2>System Overview</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshSystemOverview">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="exportSystemData">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <h3>System Health</h3>
+                                <span class="status-indicator healthy">Healthy</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="metric">
+                                    <span class="metric-label">Uptime</span>
+                                    <span class="metric-value">99.8%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">CPU Usage</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                    <span class="metric-value">45%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Memory</span>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 62%"></div>
+                                    </div>
+                                    <span class="metric-value">62%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <h3>Active Users</h3>
+                                <span class="status-indicator active">24 Online</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="user-stats">
+                                    <div class="user-stat">
+                                        <span class="stat-number">18</span>
+                                        <span class="stat-label">Officers</span>
+                                    </div>
+                                    <div class="user-stat">
+                                        <span class="stat-number">6</span>
+                                        <span class="stat-label">Admins</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <h3>Security Status</h3>
+                                <span class="status-indicator secure">Secure</span>
+                            </div>
+                            <div class="card-content">
+                                <div class="security-metrics">
+                                    <div class="security-metric">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Firewall Active</span>
+                                    </div>
+                                    <div class="security-metric">
+                                        <i class="fas fa-lock"></i>
+                                        <span>Encryption Enabled</span>
+                                    </div>
+                                    <div class="security-metric">
+                                        <i class="fas fa-eye"></i>
+                                        <span>Monitoring Active</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Activity Page -->
+            <div class="page-interface" id="system-activity-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-activity"></i>
+                        <h2>System Activity</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshActivity">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="exportActivity">
+                            <i class="fas fa-download"></i> Export Logs
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="activity-filters">
+                        <select id="activityFilter">
+                            <option value="all">All Activities</option>
+                            <option value="login">Login Events</option>
+                            <option value="system">System Events</option>
+                            <option value="security">Security Events</option>
+                        </select>
+                        <input type="text" id="activitySearch" placeholder="Search activities...">
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Officer Management Page -->
+            <div class="page-interface" id="officer-management-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-users-cog"></i>
+                        <h2>Officer Management</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="addOfficerBtn">
+                            <i class="fas fa-user-plus"></i> Add Officer
+                        </button>
+                        <button class="btn btn-secondary" id="refreshOfficersBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="officer-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Total Officers</h3>
+                                <span class="stat-number">24</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>On Duty</h3>
+                                <span class="stat-number">18</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Off Duty</h3>
+                                <span class="stat-number">6</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="officers-table-container">
+                        <div class="table-controls">
+                            <input type="text" id="officerSearch" placeholder="Search officers...">
+                            <select id="officerFilter">
+                                <option value="all">All Officers</option>
+                                <option value="on-duty">On Duty</option>
+                                <option value="off-duty">Off Duty</option>
+                            </select>
+                        </div>
+                        <div class="officers-table" id="officersTable">
+                            <div class="table-header">
+                                <div class="table-cell">Name</div>
+                                <div class="table-cell">Username</div>
+                                <div class="table-cell">Badge ID</div>
+                                <div class="table-cell">Status</div>
+                                <div class="table-cell">Last Active</div>
+                                <div class="table-cell">Actions</div>
+                            </div>
+                            <div class="table-body" id="officersTableBody">
+                                <!-- Officers rows will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Incident Management Page -->
+            <div class="page-interface" id="incident-management-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Incident Management</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="createIncidentBtn">
+                            <i class="fas fa-plus"></i> Create Incident
+                        </button>
+                        <button class="btn btn-secondary" id="refreshIncidentsBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="incident-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Active Incidents</h3>
+                                <span class="stat-number">12</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Pending Review</h3>
+                                <span class="stat-number">5</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Resolved Today</h3>
+                                <span class="stat-number">8</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="incidents-table-container">
+                        <div class="table-controls">
+                            <select id="incidentFilter">
+                                <option value="all">All Incidents</option>
+                                <option value="high">High Priority</option>
+                                <option value="medium">Medium Priority</option>
+                                <option value="low">Low Priority</option>
+                            </select>
+                            <input type="text" id="incidentSearch" placeholder="Search incidents...">
+                        </div>
+                        <div class="incidents-table" id="incidentsTable">
+                            <!-- Incidents table will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Management Page -->
+            <div class="page-interface" id="image-management-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-images"></i>
+                        <h2>Image Management</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="uploadImagesBtn">
+                            <i class="fas fa-upload"></i> Upload Images
+                        </button>
+                        <button class="btn btn-secondary" id="refreshImagesBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="image-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-images"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Total Images</h3>
+                                <span class="stat-number">1,247</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hdd"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Storage Used</h3>
+                                <span class="stat-number">4.2 GB</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Processed</h3>
+                                <span class="stat-number">1,189</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="images-grid-container">
+                        <div class="image-filters">
+                            <select id="imageFilter">
+                                <option value="all">All Images</option>
+                                <option value="processed">Processed</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                            <input type="text" id="imageSearch" placeholder="Search images...">
+                        </div>
+                        <div class="images-grid" id="imagesGrid">
+                            <!-- Images grid will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Management Page -->
+            <div class="page-interface" id="password-management-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-key"></i>
+                        <h2>Password Management</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-primary" id="resetPasswordBtn">
+                            <i class="fas fa-key"></i> Reset Password
+                        </button>
+                        <button class="btn btn-secondary" id="viewPasswordsBtn">
+                            <i class="fas fa-eye"></i> View All
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="password-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Password Resets</h3>
+                                <span class="stat-number">15</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Pending</h3>
+                                <span class="stat-number">3</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Completed</h3>
+                                <span class="stat-number">12</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="password-reset-history">
+                        <h3>Recent Password Resets</h3>
+                        <div class="password-reset-list" id="passwordResetList">
+                            <!-- Password reset history will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Alerts Page -->
+            <div class="page-interface" id="alerts-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-bell"></i>
+                        <h2>Security Alerts</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshAlerts">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="markAllRead">
+                            <i class="fas fa-check-double"></i> Mark All Read
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="alerts-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Critical</h3>
+                                <span class="stat-number">5</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>High</h3>
+                                <span class="stat-number">12</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon low">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Medium</h3>
+                                <span class="stat-number">8</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Low</h3>
+                                <span class="stat-number">3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alerts-list-container">
+                        <h3>Active Alerts</h3>
+                        <div class="alerts-list" id="alertsList">
+                            <!-- Alerts will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Page -->
+            <div class="page-interface" id="analytics-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-chart-line"></i>
+                        <h2>System Analytics</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshAnalytics">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="exportAnalytics">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="analytics-overview">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Active Officers</h3>
+                                <span class="stat-number">45</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Cameras Online</h3>
+                                <span class="stat-number">28</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Security Score</h3>
+                                <span class="stat-number">94%</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>Uptime</h3>
+                                <span class="stat-number">99.8%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analytics-charts">
+                        <h3>Performance Metrics</h3>
+                        <div class="charts-grid">
+                            <div class="chart-container">
+                                <h4>System Performance</h4>
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <p>Performance Chart</p>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <h4>Security Events</h4>
+                                <div class="chart-placeholder">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <p>Security Events Chart</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Audit Logs Page -->
+            <div class="page-interface" id="audit-logs-page" style="display: none;">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h2>Audit Logs</h2>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" id="refreshAuditLogs">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" id="exportAuditLogs">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="audit-filters">
+                        <div class="filter-group">
+                            <label>Date Range:</label>
+                            <input type="date" id="auditStartDate">
+                            <input type="date" id="auditEndDate">
+                        </div>
+                        <div class="filter-group">
+                            <label>User:</label>
+                            <select id="auditUserFilter">
+                                <option value="">All Users</option>
+                                <option value="admin">Administrator</option>
+                                <option value="officer">Officers</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Action:</label>
+                            <select id="auditActionFilter">
+                                <option value="">All Actions</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="create">Create</option>
+                                <option value="update">Update</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="audit-logs-container">
+                        <h3>System Activity Log</h3>
+                        <div class="audit-logs-list" id="auditLogsList">
+                            <!-- Audit logs will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification System -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Add Officer Modal -->
+    <div class="modal" id="addOfficerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Officer</h3>
+                <button class="modal-close" id="closeAddOfficerModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addOfficerForm">
+                    <div class="form-group">
+                        <label for="officerName">Full Name</label>
+                        <input type="text" id="officerName" name="officerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="officerBadgeId">Badge ID</label>
+                        <input type="text" id="officerBadgeId" name="officerBadgeId" required pattern="BP\d{3,6}">
+                    </div>
+                    <div class="form-group">
+                        <label for="officerEmail">Email</label>
+                        <input type="email" id="officerEmail" name="officerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="officerDepartment">Department</label>
+                        <select id="officerDepartment" name="officerDepartment" required>
+                            <option value="">Select Department</option>
+                            <option value="Field Operations">Field Operations</option>
+                            <option value="Intelligence">Intelligence</option>
+                            <option value="Investigations">Investigations</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="officerRank">Rank</label>
+                        <select id="officerRank" name="officerRank" required>
+                            <option value="">Select Rank</option>
+                            <option value="Agent">Agent</option>
+                            <option value="Senior Agent">Senior Agent</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Chief">Chief</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="officerPhone">Phone Number</label>
+                        <input type="tel" id="officerPhone" name="officerPhone" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAddOfficer">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveOfficer">Add Officer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Image Modal -->
+    <div class="modal" id="uploadImageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload New Image</h3>
+                <button class="modal-close" id="closeUploadImageModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadImageForm">
+                    <div class="form-group">
+                        <label for="imageFile">Select Image</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag and drop an image here or click to browse</p>
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageDescription">Description</label>
+                        <textarea id="imageDescription" name="imageDescription" rows="3" placeholder="Enter description for this image..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageCategory">Category</label>
+                        <select id="imageCategory" name="imageCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Suspect">Suspect</option>
+                            <option value="Vehicle">Vehicle</option>
+                            <option value="Location">Location</option>
+                            <option value="Evidence">Evidence</option>
+                            <option value="Person of Interest">Person of Interest</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagePriority">Priority</label>
+                        <select id="imagePriority" name="imagePriority" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelUploadImage">Cancel</button>
+                <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incident Response Modal -->
+    <div class="modal" id="incidentResponseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Respond to Incident</h3>
+                <button class="modal-close" id="closeIncidentResponseModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="incident-details" id="incidentDetails">
+                    <!-- Incident details will be loaded here -->
+                </div>
+                <form id="incidentResponseForm">
+                    <div class="form-group">
+                        <label for="responseType">Response Type</label>
+                        <select id="responseType" name="responseType" required>
+                            <option value="">Select Response</option>
+                            <option value="Acknowledge">Acknowledge</option>
+                            <option value="Investigate">Investigate</option>
+                            <option value="Resolve">Resolve</option>
+                            <option value="Escalate">Escalate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="responseMessage">Response Message</label>
+                        <textarea id="responseMessage" name="responseMessage" rows="4" placeholder="Enter your response..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignedOfficer">Assign to Officer</label>
+                        <select id="assignedOfficer" name="assignedOfficer">
+                            <option value="">Select Officer</option>
+                            <!-- Officers will be loaded here -->
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelIncidentResponse">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submitIncidentResponse">Submit Response</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div class="modal" id="passwordResetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Officer Password</h3>
+                <button class="modal-close" id="closePasswordResetModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordResetForm">
+                    <div class="form-group">
+                        <label for="resetOfficerSelect">Select Officer</label>
+                        <select id="resetOfficerSelect" name="resetOfficerSelect" required>
+                            <option value="">Select Officer to Reset Password</option>
+                            <!-- Officers will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="resetMethod">Reset Method</label>
+                        <select id="resetMethod" name="resetMethod" required>
+                            <option value="">Select Reset Method</option>
+                            <option value="email">Send Reset Link via Email</option>
+                            <option value="temporary">Generate Temporary Password</option>
+                            <option value="force">Force Password Change on Next Login</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="emailMessageGroup" style="display: none;">
+                        <label for="emailMessage">Custom Email Message (Optional)</label>
+                        <textarea id="emailMessage" name="emailMessage" rows="3" placeholder="Enter custom message for the officer..."></textarea>
+                    </div>
+                    <div class="form-group" id="temporaryPasswordGroup" style="display: none;">
+                        <label for="temporaryPassword">Temporary Password</label>
+                        <div class="input-group">
+                            <input type="text" id="temporaryPassword" name="temporaryPassword" readonly>
+                            <button type="button" class="btn btn-secondary" id="generatePassword">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="copyPassword">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <small class="form-text">This password will be sent to the officer's email</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="resetReason">Reason for Reset</label>
+                        <select id="resetReason" name="resetReason" required>
+                            <option value="">Select Reason</option>
+                            <option value="forgot">Officer Forgot Password</option>
+                            <option value="security">Security Breach</option>
+                            <option value="policy">Password Policy Violation</option>
+                            <option value="maintenance">System Maintenance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="customReasonGroup" style="display: none;">
+                        <label for="customReason">Custom Reason</label>
+                        <input type="text" id="customReason" name="customReason" placeholder="Enter custom reason...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelPasswordReset">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submitPasswordReset">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Reset</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Passwords Modal -->
+    <div class="modal" id="viewPasswordsModal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h3>Officer Passwords</h3>
+                <button class="modal-close" id="closeViewPasswordsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="password-view-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="passwordSearch" placeholder="Search officers...">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="departmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="Field Operations">Field Operations</option>
+                            <option value="Intelligence">Intelligence</option>
+                            <option value="Investigations">Investigations</option>
+                            <option value="Support">Support</option>
+                        </select>
+                        <button class="btn btn-secondary" id="exportPasswords">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <div class="passwords-table-container">
+                    <table class="passwords-table">
+                        <thead>
+                            <tr>
+                                <th>Officer</th>
+                                <th>Badge ID</th>
+                                <th>Department</th>
+                                <th>Password</th>
+                                <th>Last Changed</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="passwordsTableBody">
+                            <!-- Passwords will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelViewPasswords">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="modal-close" id="closeProfileModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="profile-avatar">
+                        <div class="avatar-container">
+                            <img src="https://via.placeholder.com/100x100/3b82f6/ffffff?text=A" alt="Profile Avatar" id="profileAvatar">
+                            <button type="button" class="avatar-upload-btn" id="avatarUploadBtn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileName">Full Name</label>
+                        <input type="text" id="profileName" name="profileName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileBadgeId">Badge ID</label>
+                        <input type="text" id="profileBadgeId" name="profileBadgeId" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileEmail">Email</label>
+                        <input type="email" id="profileEmail" name="profileEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileDepartment">Department</label>
+                        <select id="profileDepartment" name="profileDepartment" required>
+                            <option value="Administration">Administration</option>
+                            <option value="Field Operations">Field Operations</option>
+                            <option value="Intelligence">Intelligence</option>
+                            <option value="Investigations">Investigations</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileRank">Rank</label>
+                        <select id="profileRank" name="profileRank" required>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Senior Administrator">Senior Administrator</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Chief">Chief</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profilePhone">Phone Number</label>
+                        <input type="tel" id="profilePhone" name="profilePhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profileBio">Bio</label>
+                        <textarea id="profileBio" name="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelProfile">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveProfile">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'core/js/dashboard.js' %}"></script>
+</body>
+</html>

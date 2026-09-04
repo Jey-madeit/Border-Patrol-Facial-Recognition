@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NY Consult Face Recognition</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-camera-retro"></i>
+                <h1>NY Consult Face Recognition</h1>
+            </div>
+            <div class="header-actions">
+                <a href="officer-dashboard.html" class="dashboard-btn" id="dashboardBtn">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Officer Dashboard</span>
+                </a>
+                <div class="theme-toggle">
+                    <button id="themeBtn" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Status Card -->
+            <div class="status-card">
+                <div class="status-indicator">
+                    <div class="pulse-ring"></div>
+                    <i class="fas fa-camera" id="statusIcon"></i>
+                </div>
+                <p id="statusText">Initializing camera...</p>
+            </div>
+
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container">
+                    <video id="video" autoplay muted></video>
+                    <div class="video-overlay">
+                        <div class="face-frame" id="faceFrame"></div>
+                        <div class="capture-indicator" id="captureIndicator">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-controls">
+                    <button id="captureBtn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i>
+                        <span>Capture</span>
+                    </button>
+                    <button id="switchBtn" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Switch Camera</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="result-card" id="resultCard">
+                    <div class="result-header">
+                        <h3>Recognition Results</h3>
+                        <button id="clearBtn" class="clear-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="result-content" id="resultContent">
+                        <div class="placeholder">
+                            <i class="fas fa-user-circle"></i>
+                            <p>No image captured yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="recognizeBtn" class="btn btn-success" disabled>
+                    <i class="fas fa-search"></i>
+                    <span>Recognize Face</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Notification System -->
+        <div class="notification-container" id="notificationContainer"></div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
